@@ -83,9 +83,10 @@ The code assumes the Browserless server is running at `ws://localhost:3000/chrom
 
 
 ```bash
+# Create a meeting, join 1 moderator, and 4 attendees, and wait 60 seconds
 node index.js \
   --bbbbServerUrl "https://example.com" \
   --bbbServerSecret "mySecretKey" \
-  --automationScripts "./scripts/createMeeting.js,./scripts/joinMeeting.js" \
+  --automationScripts "./automation-scripts/createMeeting.js,./automation-scripts/printJoinUrls.js,./automation-scripts/joinMeetingAsModeratorIfFirstSession.js,./automation-scripts/joinMeetingAsAttendeeIfNotFirstSession.js,./automation-scripts/sleep60Seconds.js" \
   --concurrent 5
 ```
