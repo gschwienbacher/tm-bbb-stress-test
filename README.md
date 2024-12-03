@@ -64,7 +64,7 @@ Use the following command to run the stress test:
 
 
 ```bash
-node <script_name> --bbbbServerUrl <URL> --bbbServerSecret <SECRET> --automationScripts <SCRIPTS> [--concurrent <SESSIONS>]
+./stress-test.js --bbbbServerUrl <URL> --bbbServerSecret <SECRET> --automationScripts <SCRIPTS> [--concurrent <SESSIONS>]
 ```
 
 #### Options: 
