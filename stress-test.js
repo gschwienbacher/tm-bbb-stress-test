@@ -34,10 +34,22 @@ program
 
     const executeScripts = async (sessionId) => {
       log(`[Session ${sessionId}]`, `> Connecting to browserless`);
-      const browser = await pw.firefox.connect('ws://localhost:3000/chromium/playwright');
+      const browser = await pw.chromium.connect('ws://localhost:3000/chromium/playwright');
       log(`[Session ${sessionId}]`, `< Connected!`);
 
-      const context = await browser.newContext();
+      const context = await browser.newContext({
+        viewport: {
+          width: 1920,
+          height: 1080,
+        },
+        recordVideo: {
+          dir: '/tmp/',
+          size: { width: 1920, height: 1080 },
+        }  
+      });
+
+      context.setDefaultTimeout(3*60*1000); // 3 minutes
+      
       const page = await context.newPage();
 
       log(`[Session ${sessionId}]`, `> Running automation scripts`);
@@ -62,6 +74,16 @@ program
         }
       }
 
+      log(`[Session ${sessionId}]`, `> Closing page`);
+      await page.close();
+      log(`[Session ${sessionId}]`, `< Page closed`);
+
+      log(`[Session ${sessionId}]`, `> Saving video`);
+      const video =  page.video();
+      await video.saveAs(`/tmp/videos/session-${sessionId}.webm`);
+      log(`[Session ${sessionId}]`, `< Saved video`);
+      
+      log(`[Session ${sessionId}]`, `> Closing browser`);
       await browser.close();
       log(`[Session ${sessionId}]`, `< Browser closed`);
     };
@@ -76,6 +98,8 @@ program
     // Run all sessions concurrently
     await Promise.all(sessionPromises);
     log("> All sessions completed");
+    
+    process.exit(0);
   });
 
 program.parse(process.argv);

@@ -27,7 +27,7 @@ If you want to run the Browserless server locally, execute the following command
 
 
 ```bash
-docker run -d -p 3000:3000 --rm --name bbb_stress_test_browserless ghcr.io/browserless/multi
+docker run -e 'TIMEOUT=3600000' -d -p 3000:3000 --rm --name bbb_stress_test_browserless ghcr.io/browserless/multi
 ```
 
 #### Remote Server Setup: 

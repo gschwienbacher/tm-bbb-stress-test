@@ -9,7 +9,6 @@ export async function doIt(contextData, browser, page, log) {
       - attendee: ${joinAsAttendeeUrl}
     `);
 
-    await new Promise(resolve => setTimeout(resolve, 10*1000));
   }
 }
   
