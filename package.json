@@ -13,6 +13,7 @@
     "@playwright/test": "^1.49.0"
   },
   "dependencies": {
+    "bigbluebutton-js": "^0.2.0",
     "commander": "^12.1.0"
   }
 }

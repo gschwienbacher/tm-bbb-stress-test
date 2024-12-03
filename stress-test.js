@@ -2,6 +2,7 @@
 import pw from "playwright-core";
 import { getTimestamp } from './utils/date-time.js';
 import { Command } from 'commander';
+import bbb from 'bigbluebutton-js';
 
 function log() {
   console.log(`${getTimestamp()} -`, ...arguments);
@@ -38,7 +39,11 @@ program
       const page = await context.newPage();
 
       log(`[Session ${sessionId}]`, `> Running automation scripts`);
-      const contextData = {};
+      const contextData = {
+        sessionId,
+        bbbApi:  bbb.api(options.bbbbServerUrl, options.bbbServerSecret),
+        http:    bbb.http
+      };
       for (const scriptPath of scriptPaths) {
         try {
           const automationScript = await import(scriptPath.trim());
