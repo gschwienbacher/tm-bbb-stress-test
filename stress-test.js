@@ -30,6 +30,8 @@ program
 
     const scriptPaths = options.automationScripts.split(',');
 
+    const globalContextData = {};
+
     const executeScripts = async (sessionId) => {
       log(`[Session ${sessionId}]`, `> Connecting to browserless`);
       const browser = await pw.firefox.connect('ws://localhost:3000/chromium/playwright');
@@ -41,6 +43,7 @@ program
       log(`[Session ${sessionId}]`, `> Running automation scripts`);
       const contextData = {
         sessionId,
+        global: globalContextData,
         bbbApi:  bbb.api(options.bbbbServerUrl, options.bbbServerSecret),
         http:    bbb.http
       };
