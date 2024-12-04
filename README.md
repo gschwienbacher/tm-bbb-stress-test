@@ -3,7 +3,7 @@
 
 ## Overview
 
-This tool allows stress testing of a BBBB server by running automation scripts in a browserless environment.
+This tool allows stress testing of a BBB server by running automation scripts in a browserless environment.
 
 ## Requirements 
  
@@ -27,7 +27,7 @@ If you want to run the Browserless server locally, execute the following command
 
 
 ```bash
-docker run -e 'TIMEOUT=3600000' -d -p 3000:3000 --rm --name bbb_stress_test_browserless ghcr.io/browserless/multi
+docker run -e 'TIMEOUT=3600000' -d -p 3000:3000 --log-opt max-size=1m --log-opt max-file=1 --rm --name bbb_stress_test_browserless ghcr.io/browserless/multi
 ```
 
 #### Remote Server Setup: 
@@ -64,12 +64,12 @@ Use the following command to run the stress test:
 
 
 ```bash
-./stress-test.js --bbbbServerUrl <URL> --bbbServerSecret <SECRET> --automationScripts <SCRIPTS> [--concurrent <SESSIONS>]
+./stress-test.js --bbbServerUrl <URL> --bbbServerSecret <SECRET> --automationScripts <SCRIPTS> [--concurrent <SESSIONS>]
 ```
 
 #### Options: 
  
-- `--bbbbServerUrl`: The URL of the BBBB server (required).
+- `--bbbServerUrl`: The URL of the BBB server (required).
  
 - `--bbbServerSecret`: The secret key for the BBB server (required).
  
@@ -79,13 +79,14 @@ Use the following command to run the stress test:
 
 #### Specifying the Browserless Server: 
 The code assumes the Browserless server is running at `ws://localhost:3000/chromium/playwright`. If the server is running on a remote machine, you need to update the connection URL in the code to point to the remote server's WebSocket URL (e.g., `ws://<REMOTE_IP>:3000/chromium/playwright`).
-### Example: 
+
+#### Example:
 
 
 ```bash
 # Create a meeting, join 1 moderator, and 4 attendees, and wait 60 seconds
 node index.js \
-  --bbbbServerUrl "https://example.com" \
+  --bbbServerUrl "https://bbb-myserver.com" \
   --bbbServerSecret "mySecretKey" \
   --automationScripts "./automation-scripts/createMeeting.js,./automation-scripts/printJoinUrls.js,./automation-scripts/joinMeetingAsModeratorIfFirstSession.js,./automation-scripts/joinMeetingAsAttendeeIfNotFirstSession.js,./automation-scripts/sleep60Seconds.js" \
   --concurrent 5
