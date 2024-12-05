@@ -5,10 +5,8 @@ export async function doIt(contextData, browser, page, log) {
     let joinAsAttendeeUrl = contextData.bbbApi.administration.join('attendee', contextData.global.meetingExternalId, contextData.global.attendeePW, {redirect: true});
 
     log(`Join URL's:
-      - moderator: ${joinAsModeratorUrl}
-      - attendee: ${joinAsAttendeeUrl}
+    - moderator: ${joinAsModeratorUrl}
+    - attendee: ${joinAsAttendeeUrl}
     `);
-
   }
 }
-  

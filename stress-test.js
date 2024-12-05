@@ -35,14 +35,22 @@ program
     console.log(`Concurrent Sessions: ${options.concurrent || 1}`);
     console.log('==================================================================');
 
-
     const scriptPaths = options.automationScripts.split(',');
 
     const globalContextData = {};
 
     const executeScripts = async (sessionId) => {
       log(`[Session ${sessionId}]`, `> Connecting to browserless`);
-      const browser = await pw.chromium.connect('ws://localhost:3000/chromium/playwright');
+      const browser = await pw.chromium.launch({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--ignore-certificate-errors',
+          '--use-fake-ui-for-media-stream',
+          '--use-fake-device-for-media-stream',
+        ],
+      });
+      await pw.chromium.connect('ws://localhost:3000/chromium/playwright');
       log(`[Session ${sessionId}]`, `< Connected!`);
 
       const context = await browser.newContext({
@@ -74,6 +82,7 @@ program
             throw new Error("The automation script does not export a function named 'doIt'");
           }
 
+          contextData.scriptName = path.basename(scriptPath, '.js');
           await automationScript.doIt(contextData, browser, page, function () {
             log(`[Session ${sessionId}]`, `${scriptPath}: `, ...arguments);
           });
