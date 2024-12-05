@@ -12,17 +12,25 @@ const program = new Command();
 
 program
   .name('node-app')
-  .description('A Node.js application to process bbbbServerUrl, bbbServerSecret, and automationScripts')
+  .description('A Node.js application to process bbbServerUrl, bbbServerSecret, and automationScripts')
   .version('1.0.0')
-  .requiredOption('-u, --bbbbServerUrl <url>', 'URL of the BBBB server')
+  .requiredOption('-u, --bbbServerUrl <url>', 'URL of the BBB server')
   .requiredOption('-s, --bbbServerSecret <secret>', 'Secret key for the BBB server')
   .requiredOption('-a, --automationScripts <scripts>', 'Comma-separated list of paths to automation scripts')
   .option('-c, --concurrent <sessions>', 'Number of concurrent sessions to run', parseInt)
   .action(async (options) => {
+
+    // Function to mask sensitive info
+    const maskString = (str, visibleStart = 0, visibleEnd = 0) => {
+      if (!str || typeof str !== "string") return "";
+      const maskedPart = "*".repeat(Math.max(0, str.length - visibleStart - visibleEnd));
+      return str.slice(0, visibleStart) + maskedPart + str.slice(-visibleEnd);
+    };
+
     console.log('==================================================================');
     console.log('Processing with the following parameters:');
-    console.log(`BBBB Server URL: ${options.bbbbServerUrl}`);
-    console.log(`BBB Server Secret: ${options.bbbServerSecret}`);
+    console.log(`BBB Server URL: ${options.bbbServerUrl}`);
+    console.log(`BBB Server Secret: ${maskString(options.bbbServerSecret, 3, 3)}`);
     console.log(`Automation Scripts: ${options.automationScripts}`);
     console.log(`Concurrent Sessions: ${options.concurrent || 1}`);
     console.log('==================================================================');
@@ -56,7 +64,7 @@ program
       const contextData = {
         sessionId,
         global: globalContextData,
-        bbbApi:  bbb.api(options.bbbbServerUrl, options.bbbServerSecret),
+        bbbApi:  bbb.api(options.bbbServerUrl, options.bbbServerSecret),
         http:    bbb.http
       };
       for (const scriptPath of scriptPaths) {
