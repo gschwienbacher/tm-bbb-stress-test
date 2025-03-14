@@ -3,6 +3,7 @@ import pw from "playwright-core";
 import { getTimestamp } from './utils/date-time.js';
 import { Command } from 'commander';
 import bbb from 'bigbluebutton-js';
+import path from 'path';
 
 function log() {
   console.log(`${getTimestamp()} -`, ...arguments);
