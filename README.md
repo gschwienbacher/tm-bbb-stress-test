@@ -25,9 +25,10 @@ The Browserless server can run either locally or on a remote machine. Use Docker
 
 If you want to run the Browserless server locally, execute the following command:
 
+Change MAX_CONCURRENT_SESSIONS accordingly
 
 ```bash
-docker run -e 'TIMEOUT=3600000' -d -p 3000:3000 --log-opt max-size=1m --log-opt max-file=1 --rm --name bbb_stress_test_browserless ghcr.io/browserless/multi
+docker run -e 'TIMEOUT=3600000' -e 'MAX_CONCURRENT_SESSIONS=10' -d -p 3000:3000 --log-opt max-size=1m --log-opt max-file=1 --rm --name bbb_stress_test_browserless ghcr.io/browserless/multi
 ```
 
 #### Remote Server Setup: 
